@@ -53,7 +53,7 @@ async function loadMainPrompts() {
 }]);
 
 switch (choice) {
-    case "EMPLOYEES":
+    case "VIEW_EMPLOYEES":
         return findAllEmployees();
     case "NEW_EMPLOYEE":
         return addNewEmployee();
@@ -83,7 +83,7 @@ const employees = await db.findAllEmployees();
 console.log("\n");
 console.table(employees);
 
-IntroPrompts()
+loadMainPrompts()
 }
 
 async function viewDepartments() {
@@ -92,7 +92,7 @@ const departments = await db.viewDepartments();
 console.log("\n");
 console.table(departments);
 
-IntroPrompts()
+loadMainPrompts()
 }
 
 async function viewRoles() {
@@ -101,7 +101,7 @@ const roles = await db.viewRoles();
 console.log("\n");
 console.table(roles);
 
-IntroPrompts()
+loadMainPrompts()
 }
 
 async function addNewEmployee() {
@@ -129,7 +129,7 @@ await prompt([{
     console.log("\n");
     console.log("Successfully Added");
 
-    IntroPrompts()
+    loadMainPrompts()
 
 })
 }
@@ -144,7 +144,7 @@ await prompt([{
     console.log("\n");
     console.log("Successfully Added");
 
-    IntroPrompts()
+    loadMainPrompts()
 
 })
 }
@@ -153,7 +153,7 @@ async function updateEmployeeRole() {
 await prompt([{
         type: "input",
         name: "employeeId",
-        message: "What is the id of the employees role that you would  like to  update?",
+        message: "What is the id of the employee's role that you would like to update?",
     },{
         type: "input",
         name: "roleId",
@@ -164,7 +164,7 @@ await prompt([{
     console.log("\n");
     console.log("Successfully Added");
 
-    IntroPrompts()
+    loadMainPrompts()
 
 })
 }
@@ -188,7 +188,7 @@ await prompt([{
     console.log("\n");
     console.log("Successfully Added");
 
-    IntroPrompts()
+    loadMainPrompts()
 
 })
 }

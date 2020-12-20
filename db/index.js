@@ -1,72 +1,58 @@
 const connection = require("./connection");
 
 class DB {
-  constructor(connection) {
-    this.connection = connection;
-  }
+    constructor(connection) {
+        this.connection = connection;
+    }
 
-  // Find all employees except the given employee id
-  findAllPossibleManagers(employeeId) {
-    return this.connection.query(
-      "SELECT id, first_name, last_name FROM employee WHERE id != ?",
-      employeeId
-    );
-  }
+    findAllEmployees() {
+        return this.connection.query(
+            // "SELECT first_name, last_name FROM employee"
+            "SELECT * FROM employee"
 
-  findAllEmployeeInfo() {
-    return this.connection.query(
-      "SELECT emp.employee_id, emp.first_name, emp.last_name, title, department, salary, CONCAT(mgr.first_name, ' ', mgr.last_name) AS manager FROM employees emp LEFT JOIN roles USING(role_id) LEFT JOIN departments USING(dept_id) LEFT JOIN employees mgr ON mgr.employee_id = emp.manager_id ORDER BY emp.employee_id;"
-    );
-  }
+            // "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFTT JOIN department on role.department_id"
+        )
+    }
 
-  findAllEmployees() {
-    return this.connection.query("SELECT * FROM employees;");
-  }
+    findAllManagers(employeeId) {
+        return this.connection.query(
+            "SELECT id, first_name, last_name FROM employee WHERE id != ?", employeeId
+        );
+    }
 
-  findAllRoles() {
-    return this.connection.query("SELECT * FROM roles;");
-  }
+    addNewEmployee(employeeFirstName, employeeLastName, employeeId, employeeManagerId) {
+        return this.connection.query(
+            "INSERT INTO employee (first_name,last_name, role_id, manager_id ) VALUES (?, ?, ?, ?);", [employeeFirstName, employeeLastName, employeeId, employeeManagerId]
+        );
+    }
 
-  findAllDepartments() {
-    return this.connection.query("SELECT * FROM departments;");
-  }
+    viewDepartments() {
+        return this.connection.query(
+            "SELECT name FROM department"
+        );
+    }
 
-  createEmployee(answers, newRoleId, newManagerId) {
-    return this.connection.query("INSERT INTO employees SET ?", {
-      first_name: answers.firstName,
-      last_name: answers.lastName,
-      role_id: newRoleId,
-      manager_id: newManagerId,
-    });
-  }
+    viewRoles() {
+        return this.connection.query(
+            "SELECT title FROM role"
+        );
+    }
 
-  createRole(answers, newDeptId) {
-    return this.connection.query("INSERT INTO roles SET ?", {
-      title: answers.title,
-      salary: answers.salary,
-      dept_id: newDeptId,
-    });
-  }
+    addNewDepartment(department) {
+        return this.connection.query(
+            "INSERT INTO department (name) VALUES (?)", department);
+    }
 
-  createDepartment(answers) {
-    return this.connection.query("INSERT INTO departments SET ?", {
-      department: answers.dept,
-    });
-  }
+    addEmployeeRole(roleTitle, roleSalary, roleDeptId) {
+        return this.connection.query(
+            "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [roleTitle, roleSalary, roleDeptId]);
+    }
 
-  updateEmployee(empId, newRoleId, newManagerId) {
-    return this.connection.query("UPDATE employees SET ? WHERE ?", [
-      {
-        role_id: newRoleId,
-        manager_id: newManagerId,
-      },
-      {
-        employee_id: empId,
-      },
-    ]);
-  }
+    updateEmployeeRole(employeeId, roleId) {
+        return this.connection.query(
+            "UPDATE employee SET role_id = ? WHERE id = ?", [roleId, employeeId]);
+    }
+
 }
 
-module.exports = new DB(connection);
-
-
+module.exports = new DB(connection)
