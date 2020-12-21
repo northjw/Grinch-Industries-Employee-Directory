@@ -28,7 +28,7 @@ async function loadMainPrompts() {
         },
         {
           name: "View All Departments",
-          value: "VIEW_ALL_DEPT",
+          value: "VIEW_ALL_DEPARTMENTS",
         },
         {
           name: "Add A New Employee",
@@ -62,7 +62,7 @@ async function loadMainPrompts() {
       return findAllEmployees();
     case "VIEW_ALL_ROLES":
       return viewRoles();
-    case "VIEW_ALL_DEPT":
+    case "VIEW_ALL_DEPARTMENTS":
       return viewDepartments();
     case "NEW_EMPLOYEE":
       return addNewEmployee();
@@ -75,12 +75,12 @@ async function loadMainPrompts() {
       
     case "QUIT":
       return quit();
-      break;
+      
       
 
     default:
       return quit();
-    break;  
+    
   }
 }
 
@@ -118,12 +118,12 @@ async function addNewEmployee() {
     {
       type: "input",
       name: "NewEmployeeFirstName",
-      message: "What is the new employees first name?",
+      message: "What is the new employee's first name?",
     },
     {
       type: "input",
       name: "NewEmployeeLastName",
-      message: "What is the new employees last name?",
+      message: "What is the new employee's last name?",
     },
     {
       type: "input",
@@ -163,8 +163,8 @@ async function updateEmployeeRole() {
     {
       type: "input",
       name: "roleId",
-      message: "What is the new role for the employee?",
-    },
+      message: "What is the role id number for the employee's new role?",
+    }
   ]).then(function (data) {
     db.updateEmployeeRole(data.employeeId, data.roleId);
     console.log("\n");
@@ -188,14 +188,14 @@ async function addEmployeeRole() {
     },
     {
       type: "input",
-      name: "NewRoleDeptId",
+      name: "NewRoleDepartmentId",
       message: "What is the new role's department's id?",
     },
   ]).then(function (data) {
     db.addEmployeeRole(
       data.NewRoleName,
       data.NewRoleSalary,
-      data.NewRoleDeptId
+      data.NewRoleDepartmentId
     );
     console.log("\n");
     console.log("Successfully Added");

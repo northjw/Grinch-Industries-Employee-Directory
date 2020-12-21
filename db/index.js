@@ -47,15 +47,13 @@ class DB {
 
   updateEmployeeRole(employeeId, roleId) {
     return this.connection.query(
-      "UPDATE employee SET role_id = ? WHERE id = ?",
-      [roleId, employeeId]
-    );
-  }
+        "UPDATE employee SET role_id = ? WHERE id = ?", [roleId, employeeId]);
+}
 
-  addEmployeeRole(NewRoleName, NewRoleSalary, NewRoleDeptId) {
+  addEmployeeRole(NewRoleName, NewRoleSalary, NewRoleDepartmentId) {
     return this.connection.query(
       "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)",
-      [NewRoleName, NewRoleSalary, NewRoleDeptId]
+      [NewRoleName, NewRoleSalary, NewRoleDepartmentId]
     );
   }
 
@@ -73,17 +71,8 @@ class DB {
     });
   }
 
-  updateEmployee(empId, newRoleId, newManagerId) {
-    return this.connection.query("UPDATE employees SET ? WHERE ?", [
-      {
-        role_id: newRoleId,
-        manager_id: newManagerId,
-      },
-      {
-        employee_id: empId,
-      },
-    ]);
+  
   }
-}
+
 
 module.exports = new DB(connection);
