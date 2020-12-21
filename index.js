@@ -9,191 +9,216 @@ function init() {
   console.log(logoText);
   loadMainPrompts();
 }
-
+//Displays the prompts and allows user to make a selection of what to do
 async function loadMainPrompts() {
-    const { choice } = await prompt([
-      {
-        type: "list",
-        name: "choice",
-        message: "What would you like to do?",
-        choices: [
-          {
-            name: "View All Employees",
-            value: "VIEW_EMPLOYEES"
-          },
-          {
-            name: "Add New Employeee",
-            value: "NEW_EMPLOYEE"
+  const { choice } = await prompt([
+    {
+      type: "list",
+      name: "choice",
+      message: "What would you like to do?",
+      choices: [
+       
+        {
+          name: "View All Employees",
+          value: "VIEW_EMPLOYEES",
         },
         {
-            name: "Update Employees' Role",
-            value: "UPDATE_ROLE"
+          name: "View All Roles",
+          value: "VIEW_ALL_ROLES",
         },
         {
-            name: "View All Roles",
-            value: "VIEW_ALL_ROLES"
+          name: "View All Departments",
+          value: "VIEW_ALL_DEPT",
         },
         {
-            name: "Add Role",
-            value: "ADD_ROLE"
+          name: "Add A New Employee",
+          value: "NEW_EMPLOYEE",
         },
         {
-            name: "View Departments",
-            value: "VIEW_ALL_DEPT"
+          name: "Update An Employees' Role",
+          value: "UPDATE_ROLE",
         },
-        {
-            name: "Add Department",
-            value: "ADD_DEPT"
-        },
-        {
-            name: "Quit",
-            value: "QUIT"
-        }
-    ]
-}]);
 
-switch (choice) {
+        {
+          name: "Add A New Role",
+          value: "ADD_ROLE",
+        },
+    
+        {
+          name: "Add A New Department",
+          value: "ADD_DEPT",
+        },
+        {
+          name: "Quit",
+          value: "QUIT",
+        },
+      ],
+    },
+  ]);
+
+  switch (choice) {
+    
     case "VIEW_EMPLOYEES":
-        return findAllEmployees();
-    case "NEW_EMPLOYEE":
-        return addNewEmployee();
-    case "UPDATE_ROLE":
-        return updateEmployeeRole();
+      return findAllEmployees();
     case "VIEW_ALL_ROLES":
-        return viewRoles();
-    case "ADD_ROLE":
-        return addEmployeeRole();
+      return viewRoles();
     case "VIEW_ALL_DEPT":
-        return viewDepartments();
+      return viewDepartments();
+    case "NEW_EMPLOYEE":
+      return addNewEmployee();
+    case "UPDATE_ROLE":
+      return updateEmployeeRole();
+    case "ADD_ROLE":
+      return addEmployeeRole();
     case "ADD_DEPT":
-        return addNewDepartment();
+      return addNewDepartment();
+      
     case "QUIT":
-        return quit();
-        break
+      return quit();
+      break;
+      
 
     default:
-        return quit();
-        break
+      return quit();
+    break;  
+  }
 }
-}
+
+
 
 async function findAllEmployees() {
-const employees = await db.findAllEmployees();
+  const employees = await db.findAllEmployees();
 
-console.log("\n");
-console.table(employees);
+  console.log("\n");
+  console.table(employees);
 
-loadMainPrompts()
+  loadMainPrompts();
 }
 
 async function viewDepartments() {
-const departments = await db.viewDepartments();
+  const departments = await db.viewDepartments();
 
-console.log("\n");
-console.table(departments);
+  console.log("\n");
+  console.table(departments);
 
-loadMainPrompts()
+  loadMainPrompts();
 }
 
 async function viewRoles() {
-const roles = await db.viewRoles();
+  const roles = await db.viewRoles();
 
-console.log("\n");
-console.table(roles);
+  console.log("\n");
+  console.table(roles);
 
-loadMainPrompts()
+  loadMainPrompts();
 }
 
 async function addNewEmployee() {
-await prompt([{
-        type: "input",
-        name: "NewEmployeeFirstName",
-        message: "What is the new employees first name?",
+  await prompt([
+    {
+      type: "input",
+      name: "NewEmployeeFirstName",
+      message: "What is the new employees first name?",
     },
     {
-        type: "input",
-        name: "NewEmployeeLastName",
-        message: "What is the new employees last name?",
+      type: "input",
+      name: "NewEmployeeLastName",
+      message: "What is the new employees last name?",
     },
     {
-        type: "input",
-        name: "NewEmployeeRoleId",
-        message: "What is the new employees role id?",
+      type: "input",
+      name: "NewEmployeeRoleId",
+      message: "What is the new employee's role id?",
     },
+
     {
-        type: "input",
-        name: "NewEmployeeManagerId",
-        message: "What is the new employees manager id?",
-    }]).then(function (data) {
-    db.addNewEmployee(data.NewEmployeeFirstName, data.NewEmployeeLastName, data.NewEmployeeRoleId, data.NewEmployeeManagerId);
+      type: "input",
+      name: "NewEmployeeManagerId",
+      message: "What is the new employee's manager's id?",
+    },
+  ]).then(function (data) {
+    db.addNewEmployee(
+      data.NewEmployeeFirstName,
+      data.NewEmployeeLastName,
+      data.NewEmployeeRoleId,
+      data.NewEmployeeManagerId
+    );
     console.log("\n");
     console.log("Successfully Added");
 
-    loadMainPrompts()
-
-})
+    loadMainPrompts();
+  });
 }
 
-async function addNewDepartment() {
-await prompt([{
-        type: "input",
-        name: "NewDepartment",
-        message: "What is the new department?",
-    }]).then(function (data) {
-    db.addNewDepartment(data.NewDepartment);
-    console.log("\n");
-    console.log("Successfully Added");
 
-    loadMainPrompts()
-
-})
-}
 
 async function updateEmployeeRole() {
-await prompt([{
-        type: "input",
-        name: "employeeId",
-        message: "What is the id of the employee's role that you would like to update?",
-    },{
-        type: "input",
-        name: "roleId",
-        message: "What is the new role for the employee?",
-    }
-]).then(function (data) {
+  await prompt([
+    {
+      type: "input",
+      name: "employeeId",
+      message:
+        "What is the id of the employee who's role you would like to update?",
+    },
+    {
+      type: "input",
+      name: "roleId",
+      message: "What is the new role for the employee?",
+    },
+  ]).then(function (data) {
     db.updateEmployeeRole(data.employeeId, data.roleId);
     console.log("\n");
     console.log("Successfully Added");
 
-    loadMainPrompts()
-
-})
+    loadMainPrompts();
+  });
 }
 
 async function addEmployeeRole() {
-await prompt([{
-        type: "input",
-        name: "NewRoleName",
-        message: "What is the new role?",
-    },{
-        type: "input",
-        name: "NewRoleSalary",
-        message: "What is the new role salary?",
-    },{
-        type: "input",
-        name: "NewRoleDeptId",
-        message: "What is the new role department id?",
-    }
-]).then(function (data) {
-    db.addEmployeeRole(data.NewRoleName, data.NewRoleSalary, data.NewRoleDeptId);
+  await prompt([
+    {
+      type: "input",
+      name: "NewRoleName",
+      message: "What is the new role?",
+    },
+    {
+      type: "input",
+      name: "NewRoleSalary",
+      message: "What is the new role salary?",
+    },
+    {
+      type: "input",
+      name: "NewRoleDeptId",
+      message: "What is the new role's department's id?",
+    },
+  ]).then(function (data) {
+    db.addEmployeeRole(
+      data.NewRoleName,
+      data.NewRoleSalary,
+      data.NewRoleDeptId
+    );
     console.log("\n");
     console.log("Successfully Added");
 
-    loadMainPrompts()
-
-})
+    loadMainPrompts();
+  });
 }
+async function addNewDepartment() {
+    await prompt([
+      {
+        type: "input",
+        name: "NewDepartment",
+        message: "What is the new department?",
+      },
+    ]).then(function (data) {
+      db.addNewDepartment(data.NewDepartment);
+      console.log("\n");
+      console.log("Successfully Added");
+  
+      loadMainPrompts();
+    });
+  }
 
-async function quit(){
-return console.log("Thanks for using the automated employee tracker!")
+async function quit() {
+  return console.log("Thanks for using the automated employee manager!");
 }
-    
