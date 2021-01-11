@@ -45,10 +45,12 @@ class DB {
     );
   }
 
-  updateEmployeeRole(employeeId, roleId) {
+  updateEmployeeRole(employee_id, role_id) {
     return this.connection.query(
-        "UPDATE employee SET role_id = ? WHERE id = ?", [roleId, employeeId]);
+        "UPDATE employee SET role_id = ? WHERE id = ?", [role_id, employee_id]);
+        
 }
+
 
   addEmployeeRole(NewRoleName, NewRoleSalary, NewRoleDepartmentId) {
     return this.connection.query(

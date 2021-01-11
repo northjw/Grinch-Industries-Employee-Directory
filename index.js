@@ -159,6 +159,7 @@ async function updateEmployeeRole() {
       name: "employeeId",
       message:
         "What is the id of the employee who's role you would like to update?",
+        
     },
     {
       type: "input",
@@ -166,9 +167,10 @@ async function updateEmployeeRole() {
       message: "What is the role id number for the employee's new role?",
     }
   ]).then(function (data) {
-    db.updateEmployeeRole(data.employeeId, data.roleId);
+    db.updateEmployeeRole(data.employee_id, data.role_id);
+    
     console.log("\n");
-    console.log("Successfully Added");
+    console.log("Successfully Updated");
 
     loadMainPrompts();
   });
